@@ -1,0 +1,122 @@
+input:focus {
+
+    background: lightblue;
+    color: black;
+}
+
+table,td,tr{
+	border: 1px solid black;
+	padding: 0px;
+	margin:auto;
+}
+
+td{
+	width: 4px;
+	height: 7px;
+}
+
+#header {
+	border: 1px solid lightgrey;
+	padding-left: 10px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+/*Headerin otsikko*/
+#htitle {
+	position: absolute;
+	top: -32px;
+	background-color: white;
+}
+
+/*Login ja Register napit*/
+.button {
+	border-radius: 5px;
+	border: 1px solid grey;
+}
+
+/*Player ja Password tekstikentät*/
+.tbox {
+	width: 100px;
+}
+
+#leftmenu {
+	height: 50px;
+	width: 250px;
+	border: 1px solid lightgrey;
+	padding-left: 10px;
+	float: left;
+	position: relative;
+}
+
+/*Online players title*/
+#ltitle {
+	position: absolute;
+	top: -32px;
+	background-color: white;
+}
+
+#rightmenu {
+	height: 50px;
+	width: 250px;
+	border: 1px solid lightgrey;
+	padding-left: 10px;
+	float: right;
+	position: relative;
+}
+
+/*Player ranking title*/
+#rtitle {
+	position: absolute;
+	top: -32px;
+	background-color: white;
+}
+
+#gameboard {
+	height: 460px;
+	width: 800px;
+	margin: auto;
+	text-align: center;
+	border-left: 1px solid grey;
+	border-right: 1px solid grey;
+}
+
+table, th, td, tr {
+	margin: auto;
+
+}
+
+#footer {
+	height: 150px;
+	position: relative;
+	border: 1px solid lightgrey;
+	padding-left: 10px;
+	margin-top: 10px;
+	bottom: 0; 
+	
+}
+#chat-area{
+	height: 120px;
+	width: 100%;
+	overflow-y: auto;
+}
+
+/*footerin title*/
+#ftitle {
+	position: absolute;
+	top: -32px;
+	background-color: white;
+}
+
+#chat {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 10px;
+}
+
+#chatbox {
+	width: 300px;
+}
