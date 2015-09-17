@@ -1,0 +1,70 @@
+html, body {
+	height: 100%;
+}
+
+#gameLogo {
+    width: 100%;
+    border-style: solid;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding-bottom: 70px;
+    height: 20%;
+}
+
+#playerInfo {
+	padding-left: 1%;
+	width: 20%;
+    float:left;
+    padding-bottom: 120px;
+    border-style: solid;
+    border-width: 2px;
+    height: 70%;
+
+
+}
+
+#gameBoard {
+	width: 78%;
+	border-style: solid;
+    border-width: 2px;
+    float:right;
+    
+    height: 70%;
+
+}
+
+#chat {
+	padding-left: 1%;
+	width: 100%;
+    float:left;
+    border-style: solid;
+    border-width: 2px;
+    padding-bottom: 30px;
+
+}
+
+#esittely {
+	border-style: solid;
+    border-width: 2px;
+    height: 70%
+}
+
+.aloita {
+	margin-top: 2%;
+	position: absolute;
+	top: 50%;
+	height: 100px;
+	width: 100px;
+
+}
+
+.buttonWrapper {
+	text-align: center;
+
+}
+
+#yhteystiedot {
+	border-style: solid;
+    border-width: 2px;
+    height: 5%;
+}

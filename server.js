@@ -2,11 +2,13 @@
 
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
+var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 // SQL-yhteys, yhteysparametrit default-asennossa
 var mysql = require('mysql');
+
+
 var connection = mysql.createConnection({
 	host : 'localhost',
 	user : 'root',
@@ -14,12 +16,17 @@ var connection = mysql.createConnection({
 	database : 'matodatabase'
 });
 
+connection.connect();
+
+app.use("/", express.static(__dirname));
 
 
+app.get('/', OnGet);
 
-app.get('/', function(req, res){
+
+function OnGet(req, res){
 	res.sendFile(__dirname + '/index.html');
-});
+};
 
 
 
@@ -30,6 +37,7 @@ io.on('connect', OnConnect);
 function OnConnect(socket){
 	console.log("Client has connected.");
 // kuuntelee rekisteröinti-eventtiä
+//Lisätään myöhemmin myös login-eventin kuuntelu
 	socket.on("registerUser", registerUser);
 }
 
@@ -39,34 +47,42 @@ function registerUser(userData)  {
 	var email = parsedData["email"];
 	var username = parsedData["username"];
 	var hashpsw = parsedData["password"];
+	console.log("infoa saatu" + email + ' ' + username + ' ' + hashpsw);
 
+	var addData = "INSERT INTO wormdb (email, kayttajatunnus, pswrd) VALUES (?, ?, ?)";
+
+	connection.query(addData, [ email, username, hashpsw ]);
 	//DB-kysely
 
-	connection.query(
-		"SELECT kayttajatunnus FROM wormdb WHERE name = ?", [username],
-		function(err, row, db) {
-			if (row.length) {
+	/*connection.query(
+
+		
+		"SELECT email FROM wormdb WHERE email = ?", [email],
+		function(err, rows, db) {
+			if (rows.length) {
 				//viestiä varatusta nimestä?
-				io.emit("nameOnUse", username);
+				io.emit("nameOnUse", email);
 			}
 
-			else {
+			else { 
 				connection.query(
-					"INSERT INTO wormdb (email, kayttajatunnus, pswrd) VALUES (?. ?, ?)",
+					"INSERT INTO wormdb (email, kayttajatunnus, pswrd) VALUES (?, ?, ?)",
 					[email, username, hashpsw],
 					function(err, result){
 						if (result.affectedRows) {
 							io.emit("Tervetuloa käyttäjäksi ", username);
 						}
-					})
+
+			 			else
+						{
+							io.emit("Rekisteröinti epäonnistui.");
+						}
+					});
+			
+		
 			}
-		}
+//	});*/
 }
-
-
-
-
-
 
 
 
