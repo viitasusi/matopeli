@@ -39,6 +39,43 @@ function OnConnect(socket){
 // kuuntelee rekisteröinti-eventtiä
 //Lisätään myöhemmin myös login-eventin kuuntelu
 	socket.on("registerUser", registerUser);
+	socket.on("loginUser", loginUser);
+}
+
+function loginUser(userData) {
+	var parsedData = JSON.parse(userData);
+	var logEmail = parsedData["Lemail"];
+	var logpsw = parsedData["Lpassword"];
+	console.log("infoa saatu" + logEmail + ' ' + logpsw);
+
+	var searchUser = "SELECT kayttajatunnus, pswrd FROM wormdb WHERE email = ?"; 
+	var pswrd = "SELECT kayttajatunnus, pswrd FROM wormdb WHERE email = ?";
+
+
+
+
+
+		
+
+	connection.query( searchUser, [ logEmail, logpsw ], function(){
+		if (searchUser != null){
+			
+				if ( pswrd[ logEmail ] == logpsw){
+					io.emit("welcome");
+
+				
+				}
+
+				else {
+					io.emit("unknownUser");
+				}
+		}
+
+		else {
+			io.emit("unknownUser");
+		}
+	} ); 
+
 }
 
 

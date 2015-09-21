@@ -40,9 +40,19 @@
 								socket.emit("registerUser", JSON.stringify({ email: regEmail.value, username: regUser.value, password: hash}));
 								}
 
+							
+
 
 
 
 
 //jo olevan käyttäjätiedon viesti
 socket.on("nameOnUse")
+
+socket.on("welcome", function(){
+	console.log("Succesful login");
+});
+
+socket.on("unknownUser", function(){
+	console.log("Unknown user");
+});

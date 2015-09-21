@@ -50,9 +50,9 @@
 			<div class="tab-content">
 				<div id="kirjaudu" class="tab-pane fade in active">
 				<br>
-			    Käyttäjätunnus: <input type="text" id="email"> <br><br>
-			    Salasana: <input type="text" id="password"> <br><br>
-			    <button type="button" id="loginButton">Pelaamaan</button>
+			    Käyttäjätunnus: <input type="text" id="logEmail"> <br><br>
+			    Salasana: <input type="text" id="logPassword"> <br><br>
+			    <button type="button" id="loginButton" onclick="login()">Pelaamaan</button>
 			  	</div>
 			  	<div id="menu1" class="tab-pane fade">
 			  	<br>
@@ -69,6 +69,9 @@
 							var regPswrd;
 							var regButton;
 
+							var logEmail;
+							var logPassword;
+							var loginButton;
 
 
 
@@ -83,18 +86,34 @@
 								regPswrd = document.getElementById("registerpassword");
 								regButton = document.getElementById("regButton");
 
-								//Lisätään login-viittaukset myöhemmin
+								logEmail = document.getElementById("logEmail");
+								logPassword = document.getElementById("logPassword");
+								loginButton = document.getElementById("loginButton");
+								
 
 							} 
+
+							function login () {
+
+								console.log("User login");
+
+								console.log("Loggaus");
+								var logHash = CryptoJS.SHA256(logPassword.value).toString();
+
+								socket.emit("loginUser", JSON.stringify({ Lemail: logEmail.value, Lpassword: logHash}));
+								}
+
+
+
+							
+
 
 								//rekisteröiti
 
 							function registerUser() {
 								console.log("register user");	
 
-								/*regEmail = document.getElementById("email");
-								regUser = document.getElementById("registername");
-								regPswrd = document.getElementById("registerpassword");*/
+								
 								
 								//salasanan muodostus ja tietojen lähetys serverille
 
@@ -104,6 +123,14 @@
 								//tietojen lähetys
 								socket.emit("registerUser", JSON.stringify({ email: regEmail.value, username: regUser.value, password: hash}));
 								}
+
+							socket.on("welcome", function(){
+								console.log("Succesful login");
+							});
+
+							socket.on("unknownUser", function(){
+								console.log("Unknown user");
+});
 
 
 			   		</script>
