@@ -20,6 +20,28 @@ socket.on('connect', function(){
 		console.log("connection established");
 	});
 
+socket.on('highScores', function(data) {
+		var list = [];
+		var scoreboard= '<table id="scoreboard">';
+		scoreboard += '<td>Käyttäjätunnus</td>';
+		scoreboard += '<td>Pisteet</td>';
+		for(var i = 0; i < data.length; i++) {
+			scoreboard += '<tr>';
+			scoreboard += '<td>' + data[i].kayttajatunnus + '</td>';
+			scoreboard += '<td>' + data[i].score + '</td>';
+			scoreboard += '</tr>';
+		}
+		$("#toplist_div").html(scoreboard);
+	});
+
+function getToplist() {
+	console.log('highscore');
+	socket.emit('highestScores');
+}
+
+getToplist();
+
+
 
 //PAINETUN NÄPPÄIMEN TARKISTUS JA DIRECTION-MUUTTUJAN MUOKKAUS//
 document.onkeydown = checkKey;
@@ -248,5 +270,6 @@ function gameOverScreen(){
 		}
 	}
 }
+
 
 }

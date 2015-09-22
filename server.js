@@ -50,13 +50,14 @@ function OnConnect(socket){
 }
 
 function getHighestScores() {
+	console.log('highscore');
 	var scoreQUery = "SELECT kayttajatunnus, score FROM wormdb ORDER BY score DESC LIMIT 10";
 	connection.query(scoreQUery, function(err, rows, fields){
-		
+		console.log('highscorequery');
 		if(err) throw err;
 
 		console.log(rows);
-		socket.emit('highScores', rows);
+		io.emit('highScores', rows);
 	});
 }
 
@@ -83,7 +84,7 @@ function personalRecordScore(userData) {
 
 }
 
-function loginUser(userData, res) {
+function loginUser(userData) {
 	var parsedData = JSON.parse(userData);
 	var logEmail = parsedData["Lemail"];
 	email = parsedData["Lemail"];
@@ -99,12 +100,12 @@ function loginUser(userData, res) {
 
 		
 
-	connection.query( searchUser, [ logEmail, logpsw ], function(){
+	connection.query( searchUser, [ logEmail, logpsw ], function(err, rows, res){
 		if (searchUser != null){
 			
-				if ( pswrd[ logEmail ] == logpsw){
+				if ( rows[0].pswrd == logpsw){
 					io.emit("welcome");
-					res.sendFile(__dirname + '/matopeli.html');
+					res.redirect(__dirname + '/matopeli.html');
 
 				
 				}
