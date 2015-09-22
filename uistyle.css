@@ -120,3 +120,8 @@ table, th, td, tr {
 #chatbox {
 	width: 300px;
 }
+
+#chatMessages {
+	height: 200px;
+	overflow: scroll;
+}
