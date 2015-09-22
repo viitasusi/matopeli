@@ -14,6 +14,12 @@ var gameboardHeight = 65;
 var applePosRow; 
 var applePosData;
 
+var socket = io();
+
+socket.on('connect', function(){
+		console.log("connection established");
+	});
+
 
 //PAINETUN NÄPPÄIMEN TARKISTUS JA DIRECTION-MUUTTUJAN MUOKKAUS//
 document.onkeydown = checkKey;
@@ -229,6 +235,8 @@ function respawn(){
 }
 
 function gameOverScreen(){
+	console.log(score);
+	socket.emit('registerScore', {playerScore: score});
 	snake = [];
 	for(i = 0; i< gameboardHeight;i++){
 		for(j=0;j<gameboardWidth;j++){

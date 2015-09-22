@@ -7,12 +7,13 @@ var io = require('socket.io')(http);
 
 // SQL-yhteys, yhteysparametrit default-asennossa
 var mysql = require('mysql');
+var email = '123@123.fi';
 
 
 var connection = mysql.createConnection({
 	host : 'localhost',
 	user : 'root',
-	password : '1234',
+	password : 'Cac0f0n3',
 	database : 'matodatabase'
 });
 
@@ -22,6 +23,10 @@ app.use("/", express.static(__dirname));
 
 
 app.get('/', OnGet);
+
+app.get('/matopeli', function(req, res){
+	res.sendFile(__dirname + '/matopeli.html');
+});
 
 
 function OnGet(req, res){
@@ -40,11 +45,48 @@ function OnConnect(socket){
 //Lisätään myöhemmin myös login-eventin kuuntelu
 	socket.on("registerUser", registerUser);
 	socket.on("loginUser", loginUser);
+	socket.on('highestScores', getHighestScores);
+	socket.on('registerScore', personalRecordScore);
 }
 
-function loginUser(userData) {
+function getHighestScores() {
+	var scoreQUery = "SELECT kayttajatunnus, score FROM wormdb ORDER BY score DESC LIMIT 10";
+	connection.query(scoreQUery, function(err, rows, fields){
+		
+		if(err) throw err;
+
+		console.log(rows);
+		socket.emit('highScores', rows);
+	});
+}
+
+function personalRecordScore(userData) {
+	console.log(userData.playerScore);
+	//var parsedData = JSON.parse(userData);
+
+	var score = userData.playerScore;
+	//console.log(parsedData.playerScore);
+	console.log(score);
+	var scoreQuery = "SELECT score FROM wormdb WHERE email = '" + email + "'";
+	connection.query(scoreQuery, function(err, rows, fields) {
+		if (err) throw err;
+
+		console.log(rows[0]);
+
+		if (rows[0].score == null || rows[0].score < score) {
+			connection.query("UPDATE wormdb SET score = (?) WHERE email = (?)", [score, email]);
+			console.log("highScore, YAY!")	
+			
+			
+		}
+	})
+
+}
+
+function loginUser(userData, res) {
 	var parsedData = JSON.parse(userData);
 	var logEmail = parsedData["Lemail"];
+	email = parsedData["Lemail"];
 	var logpsw = parsedData["Lpassword"];
 	console.log("infoa saatu" + logEmail + ' ' + logpsw);
 
@@ -62,6 +104,7 @@ function loginUser(userData) {
 			
 				if ( pswrd[ logEmail ] == logpsw){
 					io.emit("welcome");
+					res.sendFile(__dirname + '/matopeli.html');
 
 				
 				}
