@@ -47,6 +47,11 @@ function OnConnect(socket){
 	socket.on("loginUser", loginUser);
 	socket.on('highestScores', getHighestScores);
 	socket.on('registerScore', personalRecordScore);
+	socket.on('chatMessage', publishChatMessage);
+}
+
+function publishChatMessage(msg) {
+	io.emit('messageFromServer', msg);
 }
 
 function getHighestScores() {

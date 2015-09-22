@@ -20,6 +20,11 @@ socket.on('connect', function(){
 		console.log("connection established");
 	});
 
+socket.on('messageFromServer', function(msg) {
+	var div = document.getElementById('chatMessages');
+	div.innerHTML = div.innerHTML + '<br>' + msg.message;
+})
+
 socket.on('highScores', function(data) {
 		var list = [];
 		var scoreboard= '<table id="scoreboard">';
@@ -270,6 +275,13 @@ function gameOverScreen(){
 		}
 	}
 }
+
+function onClickChatButton() {
+	var chatMessage = document.getElementById("lahetettavaChatViesti").value;
+	socket.emit('chatMessage', {message: chatMessage})
+}
+
+document.getElementById("chatButton").addEventListener("click", onClickChatButton);
 
 
 }
