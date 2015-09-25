@@ -126,7 +126,8 @@
 
 							socket.on("welcome", function(){
 								console.log("Succesful login");
-							});
+								confirm("Tervetuloa! Paina OK jatkaaksesi peliin.");
+								});
 
 							socket.on("unknownUser", function(){
 								console.log("Unknown user");

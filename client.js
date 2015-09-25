@@ -51,6 +51,8 @@ socket.on("nameOnUse")
 
 socket.on("welcome", function(){
 	console.log("Succesful login");
+	confirm("Tervetuloa! Paina OK jatkaaksesi peliin.");
+	
 });
 
 socket.on("unknownUser", function(){

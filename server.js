@@ -7,13 +7,12 @@ var io = require('socket.io')(http);
 
 // SQL-yhteys, yhteysparametrit default-asennossa
 var mysql = require('mysql');
-var email = '123@123.fi';
 
 
 var connection = mysql.createConnection({
 	host : 'localhost',
 	user : 'root',
-	password : 'Cac0f0n3',
+	password : '1234',
 	database : 'matodatabase'
 });
 
@@ -48,6 +47,8 @@ function OnConnect(socket){
 	socket.on('highestScores', getHighestScores);
 	socket.on('registerScore', personalRecordScore);
 	socket.on('chatMessage', publishChatMessage);
+
+
 }
 
 function publishChatMessage(msg) {
@@ -89,29 +90,37 @@ function personalRecordScore(userData) {
 
 }
 
+
+
 function loginUser(userData) {
 	var parsedData = JSON.parse(userData);
 	var logEmail = parsedData["Lemail"];
-	email = parsedData["Lemail"];
 	var logpsw = parsedData["Lpassword"];
 	console.log("infoa saatu" + logEmail + ' ' + logpsw);
 
-	var searchUser = "SELECT kayttajatunnus, pswrd FROM wormdb WHERE email = ?"; 
-	var pswrd = "SELECT kayttajatunnus, pswrd FROM wormdb WHERE email = ?";
+	
+	var userQuery = "SELECT kayttajatunnus, pswrd FROM wormdb WHERE email = (?)";
 
 
 
 
-
+	//connection.query( dbPswrd, [logEmail]);
 		
 
-	connection.query( searchUser, [ logEmail, logpsw ], function(err, rows, res){
-		if (searchUser != null){
+	connection.query( userQuery,[ logEmail ], function(err, rows, fields){
+		if (err) throw err;
+
+		if (rows != null){
+
+			console.log("userQuery");
 			
 				if ( rows[0].pswrd == logpsw){
 					io.emit("welcome");
-					res.redirect(__dirname + '/matopeli.html');
 
+
+					console.log("Onnistunut login");
+
+					io.emit("addToList", kayttajatunnus);
 				
 				}
 
@@ -140,34 +149,7 @@ function registerUser(userData)  {
 	connection.query(addData, [ email, username, hashpsw ]);
 	//DB-kysely
 
-	/*connection.query(
-
-		
-		"SELECT email FROM wormdb WHERE email = ?", [email],
-		function(err, rows, db) {
-			if (rows.length) {
-				//viestiä varatusta nimestä?
-				io.emit("nameOnUse", email);
-			}
-
-			else { 
-				connection.query(
-					"INSERT INTO wormdb (email, kayttajatunnus, pswrd) VALUES (?, ?, ?)",
-					[email, username, hashpsw],
-					function(err, result){
-						if (result.affectedRows) {
-							io.emit("Tervetuloa käyttäjäksi ", username);
-						}
-
-			 			else
-						{
-							io.emit("Rekisteröinti epäonnistui.");
-						}
-					});
-			
-		
-			}
-//	});*/
+	
 }
 
 
