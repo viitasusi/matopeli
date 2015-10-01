@@ -22,6 +22,20 @@
 
 							} 
 
+
+
+							function login () {
+
+								console.log("User login");
+
+								console.log("Loggaus");
+								var logHash = CryptoJS.SHA256(logPassword.value).toString();
+
+								socket.emit("loginUser", JSON.stringify({ Lemail: logEmail.value, Lpassword: logHash}));
+								}
+
+
+
 								//rekisteröiti
 
 							function registerUser() {
@@ -49,10 +63,25 @@
 //jo olevan käyttäjätiedon viesti
 socket.on("nameOnUse")
 
+socket.on("list"), function(clients) {
+	console.log("listan päivitys");
+	var div = document.getElementById('lista');
+	div.innerHTML = clients[];
+}
+
 socket.on("welcome", function(){
 	console.log("Succesful login");
-	confirm("Tervetuloa! Paina OK jatkaaksesi peliin.");
+	var r = confirm("Tervetuloa " + kayttajatunnus + "! Paina OK jatkaaksesi peliin.")
 	
+	if (r == true)
+	{
+		window.location.replace("/matopeli.html");
+	}
+
+	else
+	{
+		socket.emit("disconnect");
+	}
 });
 
 socket.on("unknownUser", function(){

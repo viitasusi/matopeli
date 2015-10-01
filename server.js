@@ -5,6 +5,8 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
+
+
 // SQL-yhteys, yhteysparametrit default-asennossa
 var mysql = require('mysql');
 
@@ -48,6 +50,9 @@ function OnConnect(socket){
 	socket.on('registerScore', personalRecordScore);
 	socket.on('chatMessage', publishChatMessage);
 
+//	socket.on('addToList', addToList);
+//	socket.on('disconnect', disconnectUser);
+
 
 }
 
@@ -90,6 +95,8 @@ function personalRecordScore(userData) {
 
 }
 
+//käytäjien tallennus
+var clientList = [];
 
 
 function loginUser(userData) {
@@ -115,13 +122,21 @@ function loginUser(userData) {
 			console.log("userQuery");
 			
 				if ( rows[0].pswrd == logpsw){
-					io.emit("welcome");
+					io.emit("welcome", rows[0].kayttajatunnus);
+
+					
+					clientList.push(rows[0].kayttajatunnus);
 
 
-					console.log("Onnistunut login");
+					console.log("Onnistunut login " + clientList);
+					io.emit("listUpdate", clientList);
+					
 
-					io.emit("addToList", kayttajatunnus);
-				
+
+
+					
+					
+					
 				}
 
 				else {
@@ -134,6 +149,22 @@ function loginUser(userData) {
 		}
 	} ); 
 
+}
+
+function disconnectUser() {
+	console.log("käyttäjä poistui.");
+
+
+	var index = clientList.indexOf(socket.name);
+	clientList.splice(index, 1);
+	
+}
+
+
+//listakutsu
+function playerList()
+{
+	io.emit("listUsers", clientList);
 }
 
 

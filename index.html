@@ -26,7 +26,9 @@
 	Pelin esittely: <br><br>
 	Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 	<br><br>
-	Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	<div id="lista">
+		
+	</div>
 	<br><br>
 	Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 	<br><br>
@@ -93,6 +95,8 @@
 
 							} 
 
+							
+
 							function login () {
 
 								console.log("User login");
@@ -124,13 +128,32 @@
 								socket.emit("registerUser", JSON.stringify({ email: regEmail.value, username: regUser.value, password: hash}));
 								}
 
-							socket.on("welcome", function(){
+
+
+
+							socket.on("welcome", function(kayttajatunnus){
 								console.log("Succesful login");
-								confirm("Tervetuloa! Paina OK jatkaaksesi peliin.");
+								var r = confirm("Tervetuloa " + kayttajatunnus + "! Paina OK jatkaaksesi peliin.")
+	
+									if (r == true)
+									{
+										window.location.replace("/matopeli.html");
+									}
+
+									if (r == false)
+									{
+										socket.emit("disconnect");
+									}
 								});
+
+						
 
 							socket.on("unknownUser", function(){
 								console.log("Unknown user");
+
+							
+
+							
 });
 
 
